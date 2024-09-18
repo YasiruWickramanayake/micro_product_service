@@ -74,14 +74,7 @@ public class ProductServiceImpl implements ProductService {
         try {
             // get all reserved items by saga id
             List<ReservedItem> allReservedItemsBySagaId = getAllReservedItemsBySagaId(itemReleaseRequest.getSagaId());
-            itemReleaseRequest.getReservedProducts().forEach(reservedProduct -> {
-                ReservedItem availableReservedItem = allReservedItemsBySagaId.stream()
-                        .filter(reservedItem ->
-                                reservedItem.getProduct().getProductId().equals(reservedProduct.getProductId()))
-                        .findFirst()
-                        .orElseThrow(() -> new ProductException(ErrorMessage.RESERVED_ITEM_NOT_IN_DB.getErrorCode(),
-                                ErrorMessage.RESERVED_ITEM_NOT_IN_DB.getErrorMessage()));
-
+            allReservedItemsBySagaId.forEach(availableReservedItem -> {
                 updateReservedItem(availableReservedItem);
                 reservedItemRepository.save(availableReservedItem);
             });

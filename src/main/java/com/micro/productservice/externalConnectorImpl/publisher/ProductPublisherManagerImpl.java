@@ -1,5 +1,8 @@
 package com.micro.productservice.externalConnectorImpl.publisher;
 
+import com.micro.productService.ProductReleaseSuccessRequest;
+import com.micro.productService.ProductReserveFailRequest;
+import com.micro.productService.ProductReserveSuccessRequest;
 import com.micro.productservice.externalConnectors.publisher.ProductPublisher;
 import com.micro.productservice.externalConnectors.publisher.ProductPublisherManager;
 import com.micro.productservice.util.ReservationStatus;
@@ -38,24 +41,24 @@ public class ProductPublisherManagerImpl implements ProductPublisherManager {
     }
 
     private void publishItemReservationSuccessMessage(ItemReservationPublisherMessage itemReservationPublisherMessage) {
-        ItemReservationSuccessMessage itemReservationSuccessMessage = ItemReservationSuccessMessage.builder()
-                .sagaId(itemReservationPublisherMessage.getSagaId())
+        ProductReserveSuccessRequest productReserveSuccessRequest = ProductReserveSuccessRequest.newBuilder()
+                .setSagaId(itemReservationPublisherMessage.getSagaId())
                 .build();
-        productPublisher.itemReservationSuccessMessagePublish(itemReservationSuccessMessage);
+        productPublisher.itemReservationSuccessMessagePublish(productReserveSuccessRequest);
     }
 
     private void publishItemReservationFailMessage(ItemReservationPublisherMessage itemReservationPublisherMessage) {
-        ItemReservationFailMessage itemReservationFailMessage = ItemReservationFailMessage.builder()
-                .sagaId(itemReservationPublisherMessage.getSagaId())
+        ProductReserveFailRequest productReserveFailRequest = ProductReserveFailRequest.newBuilder()
+                .setSagaId(itemReservationPublisherMessage.getSagaId())
                 .build();
-        productPublisher.itemReservationFailMessagePublish(itemReservationFailMessage);
+        productPublisher.itemReservationFailMessagePublish(productReserveFailRequest);
     }
 
     private void publishItemReleaseSuccessMessage(ItemReservationPublisherMessage itemReservationPublisherMessage){
-        ItemReleaseSuccessMessage itemReleaseSuccessMessage = ItemReleaseSuccessMessage.builder()
-                .sagaId(itemReservationPublisherMessage.getSagaId())
+        ProductReleaseSuccessRequest productReleaseSuccessRequest = ProductReleaseSuccessRequest.newBuilder()
+                .setSagaId(itemReservationPublisherMessage.getSagaId())
                 .build();
-        productPublisher.itemReleaseSuccessMessagePublish(itemReleaseSuccessMessage);
+        productPublisher.itemReleaseSuccessMessagePublish(productReleaseSuccessRequest);
     }
 
 
